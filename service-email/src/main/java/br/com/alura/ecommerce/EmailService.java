@@ -8,12 +8,12 @@ public class EmailService {
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		EmailService emailService = new EmailService();
 		try (KafkaService service = new KafkaService(EmailService.class.getSimpleName(), "ECOMMERCE_SEND_EMAIL",
-				emailService::parse, Email.class, Map.of())) {
+				emailService::parse, Map.of())) {
 			service.run();
 		}
 	}
 
-	public void parse(ConsumerRecord<String, Email> record) {
+	public void parse(ConsumerRecord<String, Message<String>> record) {
 		System.out.println("-----------------");
 		System.out.println("Sending email");
 		System.out.println("key: " + record.key());
