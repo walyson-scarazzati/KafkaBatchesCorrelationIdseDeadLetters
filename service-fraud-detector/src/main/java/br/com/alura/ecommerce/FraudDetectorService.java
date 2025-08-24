@@ -7,14 +7,16 @@ import java.util.concurrent.ExecutionException;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class FraudDetectorService {
-	public static void main(String[] args) {
-		var fraudDetectorService = new FraudDetectorService();
-		try (var service = new KafkaService<>(FraudDetectorService.class.getSimpleName(), "ECOMMERCE_NEW_ORDER",
-				fraudDetectorService::parse, Order.class, Map.of())) {
-			service.run();
-		}
-	}
-	
+    public static void main(String[] args) {
+        var fraudService = new FraudDetectorService();
+        try (var service = new KafkaService<>(FraudDetectorService.class.getSimpleName(),
+                "ECOMMERCE_NEW_ORDER",
+                fraudService::parse,
+                Order.class,
+                Map.of())) {
+            service.run();
+        }
+    }
 	private final KafkaDispatcher<Order> orderDispatcher = new KafkaDispatcher<>();
 
 	private void parse(ConsumerRecord<String, Order> record) throws ExecutionException, InterruptedException  {

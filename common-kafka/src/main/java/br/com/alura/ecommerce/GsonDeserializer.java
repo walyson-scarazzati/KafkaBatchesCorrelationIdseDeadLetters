@@ -1,31 +1,17 @@
 package br.com.alura.ecommerce;
 
-import java.util.Map;
-
-import org.apache.kafka.common.serialization.Deserializer;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.kafka.common.serialization.Deserializer;
 
-public class GsonDeserializer<T> implements Deserializer<T> {
+import java.util.Map;
 
-	public static final String TYPE_CONFIG = "br.com.alura.ecommerce.type";
-	private final Gson gson = new GsonBuilder().create();
-	private Class<T> type;
+public class GsonDeserializer implements Deserializer<Message> {
 
-	@Override
-	public void configure(Map<String, ?> configs, boolean isKey) {
-		String typeName = String.valueOf(configs.get(TYPE_CONFIG));
-		try {
-			this.type = (Class<T>) Class.forName(typeName);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Type not found: " + typeName, e);
-		}
-	}
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(Message.class, new MessageAdapter()).create();
 
-	@Override
-	public T deserialize(String topic, byte[] bytes) {
-		return gson.fromJson(new String(bytes), type);
-	}
-
+    @Override
+    public Message deserialize(String s, byte[] bytes) {
+        return gson.fromJson(new String(bytes), Message.class);
+    }
 }

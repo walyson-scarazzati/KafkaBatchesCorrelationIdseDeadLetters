@@ -15,16 +15,16 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 
 class KafkaService<T> implements Closeable {
 
-	private KafkaConsumer<String, T> consumer;
+	private KafkaConsumer<String, Message<T>> consumer;
 	private final ConsumerFunction parse;
 	private Class<T> type;
 
-	KafkaService(String groupId, String topic, ConsumerFunction parse, Class<T> type, Map<String, String> properties) {
+	KafkaService(String groupId, String topic, ConsumerFunction<T> parse, Class<T> type, Map<String, String> properties) {
 		this(parse, groupId, type, properties);
 		consumer.subscribe(Collections.singletonList(topic));
 	}
 
-	KafkaService(String groupId, Pattern topic, ConsumerFunction parse, Class<T> type, Map<String, String> properties) {
+	KafkaService(String groupId, Pattern topic, ConsumerFunction<T> parse, Class<T> type, Map<String, String> properties) {
 		this(parse, groupId, type, properties);
 		consumer.subscribe(topic);
 	}
@@ -60,7 +60,6 @@ class KafkaService<T> implements Closeable {
 	        properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, GsonDeserializer.class.getName());
 	        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 	        properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, UUID.randomUUID().toString());
-	        properties.setProperty(GsonDeserializer.TYPE_CONFIG, type.getName());
 	        properties.putAll(overrideProperties);
 	        return properties;
 	    }
