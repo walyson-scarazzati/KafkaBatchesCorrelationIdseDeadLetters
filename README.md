@@ -11,6 +11,7 @@ This project is a Java-based microservices system for ecommerce [alura.com.br](h
   - `service-fraud-detector/` (fraud detection)
   - `service-log/` (event logging)
   - `service-http-ecommerce/` (HTTP API for ecommerce integration)
+  - `service-reading-report/` (reading report)
   - `service-users/` (user management and local database)
   
 
@@ -72,6 +73,7 @@ java -jar target/<jar-name>.jar
 - **service-fraud-detector**: detects possible fraud in orders
 - **service-log**: logs events
 - **service-http-ecommerce**: exposes HTTP endpoints for external integration
+- **service-reading-report**: generate report
 - **service-users**: manages users and local persistence (e.g., `users_database.db`)
 
 ## Notes
