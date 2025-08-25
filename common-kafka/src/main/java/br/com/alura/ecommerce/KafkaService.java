@@ -44,7 +44,7 @@ class KafkaService<T> implements Closeable {
                         } catch (Exception e) {
                             e.printStackTrace();
                             var message = record.value();
-                            deadLetter.send("ECOMMERCE DEADLETTER",
+                            deadLetter.send("ECOMMERCE_DEADLETTER",
                                     message.getId().toString(),
                                     message.getId().continueWith("DeadLetter"),
                                     new GsonSerializer<>().serialize("", message));
